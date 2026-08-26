@@ -1,0 +1,76 @@
+# Spanish translations for django-task-psql.
+# Copyright (C) 2026, YP Software
+# This file is distributed under the same license as the django-task-psql
+# package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-task-psql \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 20:15-0300\n"
+"PO-Revision-Date: 2026-08-26 20:15-0300\n"
+"Last-Translator: YP Software <info@ypsoftware.com.py>\n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../architecture.md:1
+msgid "How it works"
+msgstr "Cómo funciona"
+
+#: ../../architecture.md:3
+msgid ""
+"**Claiming**: `UPDATE ... WHERE id = (SELECT ... FOR UPDATE SKIP LOCKED "
+"LIMIT 1) RETURNING ...` — safe for multiple worker processes running in "
+"parallel."
+msgstr ""
+"**Claiming**: `UPDATE ... WHERE id = (SELECT ... FOR UPDATE SKIP LOCKED "
+"LIMIT 1) RETURNING ...` — seguro para múltiples procesos worker corriendo "
+"en paralelo."
+
+#: ../../architecture.md:4
+msgid ""
+"**Wakeup**: a Postgres trigger emits `NOTIFY task_psql_new` on every "
+"`INSERT` of a `READY` task (fired after commit, so tasks created inside a"
+" transaction only wake the worker once it commits). The worker blocks on "
+"`LISTEN` with a heartbeat fallback (`TASK_WORKER_HEARTBEAT_S`) to catch "
+"deferred tasks whose `run_after` has elapsed without a fresh `NOTIFY`."
+msgstr ""
+"**Activación**: un trigger de Postgres emite `NOTIFY task_psql_new` en "
+"cada `INSERT` de una tarea `READY` (disparado después del commit, así que "
+"las tareas creadas dentro de una transacción solo despiertan al worker "
+"una vez que esa transacción hace commit). El worker bloquea en `LISTEN` "
+"con un fallback por heartbeat (`TASK_WORKER_HEARTBEAT_S`) para cubrir "
+"tareas diferidas cuyo `run_after` venció sin un `NOTIFY` nuevo."
+
+#: ../../architecture.md:5
+msgid ""
+"**Concurrency**: the worker's main thread claims one task at a time and "
+"submits it to a `ThreadPoolExecutor`; a `Semaphore` limits how many are "
+"in flight before claiming the next. Each thread closes its own database "
+"connection when it's done with a task — with Django's native connection "
+"pool enabled, that returns the connection to the pool instead of dropping"
+" the socket, which avoids a connection leak that recurring background "
+"threads are prone to."
+msgstr ""
+"**Concurrencia**: el thread principal del worker claimea una tarea a la "
+"vez y la somete a un `ThreadPoolExecutor`; un `Semaphore` limita cuántas "
+"hay en vuelo antes de claimear la siguiente. Cada thread cierra su propia "
+"conexión a la base al terminar una tarea — con el connection pool nativo "
+"de Django activo, eso devuelve la conexión al pool en vez de cortar el "
+"socket, evitando una fuga de conexiones a la que son propensos los "
+"threads de background que se reutilizan."
+
+#: ../../architecture.md:6
+msgid ""
+"**Retries**: on failure, a task is rescheduled with `run_after = now() + "
+"backoff_base * 2^(attempt - 1)`, until `max_attempts` is reached, at "
+"which point it's marked `FAILED`."
+msgstr ""
+"**Reintentos**: ante una falla, la tarea se reprograma con `run_after = "
+"now() + backoff_base * 2^(attempt - 1)`, hasta alcanzar `max_attempts`, "
+"momento en el que se marca `FAILED`."

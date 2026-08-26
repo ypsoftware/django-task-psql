@@ -25,6 +25,8 @@ TASKS = {
         "OPTIONS": {
             # Optional. Defaults to uuid.uuid4.
             "id_function": "uuid.uuid4",
+            # Optional. Default attempts before a task is marked FAILED. Defaults to 1.
+            "max_attempts": 3,
         },
     }
 }
@@ -77,11 +79,17 @@ A CLI flag (`--concurrency`, `--queues`) always overrides its corresponding envi
 ### Dead-letter queue
 
 ```bash
-python manage.py dlq_list
-python manage.py dlq_replay <id>
+python manage.py dlq_list                    # all failed tasks
+python manage.py dlq_list --queue emails --limit 50
+python manage.py dlq_list --json
+
+python manage.py dlq_replay <id>             # requeue one failed task
 python manage.py dlq_replay --all --queue emails
-python manage.py stats --days 7
-python manage.py cleanup_tasks --days 7   # prune old finished rows, e.g. from cron
+
+python manage.py stats --days 7              # queue stats: totals + top failing tasks
+python manage.py stats --queue emails --json
+
+python manage.py cleanup_tasks --days 7      # prune old finished rows, e.g. from cron
 ```
 
 ### Django admin

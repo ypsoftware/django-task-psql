@@ -23,6 +23,12 @@ dev = [
     "ruff>=0.8",
     "psycopg-binary>=3.1",
 ]
+docs = [
+    "sphinx>=8.0",
+    "myst-parser>=4.0",
+    "furo>=2024.8.6",
+    "sphinx-intl>=2.2",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["django_task_psql"]

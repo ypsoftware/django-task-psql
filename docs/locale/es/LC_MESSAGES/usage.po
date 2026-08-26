@@ -1,0 +1,65 @@
+# Spanish translations for django-task-psql.
+# Copyright (C) 2026, YP Software
+# This file is distributed under the same license as the django-task-psql
+# package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-task-psql \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 20:15-0300\n"
+"PO-Revision-Date: 2026-08-26 20:15-0300\n"
+"Last-Translator: YP Software <info@ypsoftware.com.py>\n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../usage.md:1
+msgid "Usage"
+msgstr "Uso"
+
+#: ../../usage.md:3
+msgid "Standard `django.tasks` API — no custom decorator:"
+msgstr "API estándar de `django.tasks` — sin decorador propio:"
+
+#: ../../usage.md:15
+msgid ""
+"Coroutines (`async def`) work out of the box — `Task.call()` bridges them"
+" via `async_to_sync` internally, no asyncio event loop needed in the "
+"worker."
+msgstr ""
+"Las corutinas (`async def`) funcionan sin configuración adicional — "
+"`Task.call()` las conecta vía `async_to_sync` internamente, no hace falta "
+"un loop de asyncio en el worker."
+
+#: ../../usage.md:17
+msgid "Running the worker"
+msgstr "Correr el worker"
+
+#: ../../usage.md:23
+msgid "`--batch`: drain the queue then exit (useful for a Kubernetes Job)."
+msgstr ""
+"`--batch`: procesa todas las tareas pendientes y sale (útil para un Job "
+"de Kubernetes)."
+
+#: ../../usage.md:24
+msgid "`--max-tasks N`: exit after roughly N tasks."
+msgstr "`--max-tasks N`: sale después de aproximadamente N tareas."
+
+#: ../../usage.md:25
+msgid "`--backend default`: which `TASKS` alias to process."
+msgstr "`--backend default`: qué alias de `TASKS` procesar."
+
+#: ../../usage.md:27
+msgid "Django admin"
+msgstr "Admin de Django"
+
+#: ../../usage.md:29
+msgid "`TaskRow` is registered read-only in the Django admin for inspection."
+msgstr ""
+"`TaskRow` está registrado en modo solo lectura en el admin de Django para "
+"inspección."
