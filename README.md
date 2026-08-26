@@ -2,16 +2,9 @@
 
 A Postgres-native backend for [Django Tasks](https://docs.djangoproject.com/en/stable/topics/tasks/) (`django.tasks`, Django 6.0+).
 
-Django 6.0 introduced an official interface for background task queues (`@task`, `.enqueue()`, pluggable backends via the `TASKS` setting), but ships with only two backends: `ImmediateBackend` (runs synchronously, no real queue) and `DummyBackend` (tests only). `django-task-psql` fills that gap for Postgres users who don't want to run Celery or Redis.
+Django 6.0 introduced an official interface for background task queues (`@task`, `.enqueue()`, pluggable backends via the `TASKS` setting). `django-task-psql` is a production backend for that interface, built specifically for Postgres: real queueing via `SKIP LOCKED`, `LISTEN`/`NOTIFY` wakeup instead of polling, and automatic retries with exponential backoff — no Celery or Redis required.
 
-## Why not just use [`django-tasks-db`](https://github.com/RealOrangeOne/django-tasks-db)?
-
-That project is mature and database-agnostic (Postgres/MySQL/SQLite). `django-task-psql` makes the opposite trade-off: **Postgres-only**, in exchange for two things that engine-agnostic design can't give you:
-
-- **`LISTEN`/`NOTIFY` wakeup** instead of polling — the worker reacts to a new task almost instantly instead of waiting for the next poll interval.
-- **Automatic retries with exponential backoff** — a failing task is retried up to `max_attempts` times with an increasing delay, not just marked `FAILED` after the first error.
-
-Both projects use `SKIP LOCKED` for claiming; both are valid choices depending on whether you need multi-engine support.
+Built Postgres-only on purpose, trading multi-engine support for tighter integration with Postgres features (see [`django-tasks-db`](https://github.com/RealOrangeOne/django-tasks-db) for a database-agnostic alternative).
 
 ## Installation
 
@@ -104,7 +97,7 @@ python manage.py cleanup_tasks --days 7   # prune old finished rows, e.g. from c
 
 ## Scope
 
-Postgres only — no MySQL/SQLite compatibility layer, no support for Django versions before 6.0 (i.e. before `django.tasks` existed). Single Postgres-cluster deployments only; the design (`SKIP LOCKED`) supports running multiple worker processes in parallel already, though that hasn't been load-tested yet.
+Targets Postgres and Django 6.0+. Designed for a single Postgres cluster; `SKIP LOCKED` already supports running multiple worker processes against it in parallel.
 
 ## License
 

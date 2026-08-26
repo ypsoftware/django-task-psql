@@ -1,29 +1,35 @@
-[tool.poetry]
+[project]
 name = "django-task-psql"
 version = "0.1.0"
 description = "A Postgres-native backend for Django Tasks (django.tasks) — SKIP LOCKED claiming, LISTEN/NOTIFY wakeup, automatic retry with backoff."
-authors = ["YP Software <info@ypsoftware.com.py>"]
+authors = [{ name = "YP Software", email = "info@ypsoftware.com.py" }]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/ypsoftware/django-task-psql"
-repository = "https://github.com/ypsoftware/django-task-psql"
+requires-python = ">=3.12"
 keywords = ["django", "tasks", "postgres", "queue", "background-jobs"]
-packages = [{ include = "django_task_psql" }]
+dependencies = [
+    "django>=6.0",
+    "psycopg[pool]>=3.1",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-django = ">=6.0"
-psycopg = { version = ">=3.1", extras = ["pool"] }
+[project.urls]
+Homepage = "https://github.com/ypsoftware/django-task-psql"
+Repository = "https://github.com/ypsoftware/django-task-psql"
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.0"
-pytest-django = "^4.9"
-ruff = "^0.8"
-psycopg-binary = ">=3.1"
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-django>=4.9",
+    "ruff>=0.8",
+    "psycopg-binary>=3.1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["django_task_psql"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.ruff]
 line-length = 120

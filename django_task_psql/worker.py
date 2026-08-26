@@ -1,7 +1,6 @@
 """Loop del worker — SKIP LOCKED + LISTEN/NOTIFY + concurrencia real.
 
-Diseño (port de la versión con ThreadPoolExecutor, la más madura entre las
-implementaciones internas de referencia — ver plan de diseño):
+Diseño:
 
 - El thread principal claimea UNA tarea a la vez vía ``UPDATE ... WHERE id =
   (SELECT ... FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING ...`` y la somete a un
