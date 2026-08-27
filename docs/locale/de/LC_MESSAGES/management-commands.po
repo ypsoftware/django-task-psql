@@ -1,0 +1,37 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, YP Software
+# This file is distributed under the same license as the django-task-psql
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-task-psql \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-27 10:50-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../management-commands.md:1
+msgid "Management commands"
+msgstr "Management-Befehle"
+
+#: ../../management-commands.md:3
+msgid "Dead-letter queue"
+msgstr "Dead-Letter-Queue"
+
+#: ../../management-commands.md:14
+msgid "Stats"
+msgstr "Statistiken"
+
+#: ../../management-commands.md:21
+msgid "Cleanup"
+msgstr "Bereinigung"
+

@@ -1,17 +1,18 @@
-# Spanish translations for django-task-psql.
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, YP Software
 # This file is distributed under the same license as the django-task-psql
 # package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: django-task-psql \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-27 10:50-0300\n"
-"PO-Revision-Date: 2026-08-26 20:15-0300\n"
-"Last-Translator: YP Software <info@ypsoftware.com.py>\n"
-"Language: es\n"
-"Language-Team: es <LL@li.org>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: it\n"
+"Language-Team: it <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -24,7 +25,7 @@ msgstr "Uso"
 
 #: ../../usage.md:3
 msgid "Standard `django.tasks` API — no custom decorator:"
-msgstr "API estándar de `django.tasks` — sin decorador propio:"
+msgstr "API standard di `django.tasks` — nessun decoratore personalizzato:"
 
 #: ../../usage.md:15
 msgid ""
@@ -32,9 +33,10 @@ msgid ""
 "Overrides `OPTIONS[\"max_attempts\"]` for that task only; tasks that "
 "don't set it keep using the backend-wide default."
 msgstr ""
-"Override de reintentos por tarea: `@task(queue_name=\"emails\", "
-"max_attempts=1)`. Sobreescribe `OPTIONS[\"max_attempts\"]` solo para esa "
-"tarea; las tareas que no lo setean siguen usando el default del backend."
+"Override del retry per singola task: `@task(queue_name=\"emails\", "
+"max_attempts=1)`. Sovrascrive `OPTIONS[\"max_attempts\"]` solo per quella "
+"task; le task che non lo impostano continuano a usare il valore "
+"predefinito a livello di backend."
 
 #: ../../usage.md:17
 msgid ""
@@ -42,41 +44,40 @@ msgid ""
 " via `async_to_sync` internally, no asyncio event loop needed in the "
 "worker."
 msgstr ""
-"Las corutinas (`async def`) funcionan sin configuración adicional — "
-"`Task.call()` las conecta vía `async_to_sync` internamente, no hace falta"
-" un loop de asyncio en el worker."
+"Le coroutine (`async def`) funzionano senza configurazione aggiuntiva — "
+"`Task.call()` le collega internamente tramite `async_to_sync`, senza "
+"bisogno di un event loop asyncio nel worker."
 
 #: ../../usage.md:19
 msgid "Running the worker"
-msgstr "Correr el worker"
+msgstr "Eseguire il worker"
 
 #: ../../usage.md:25
 msgid "`--batch`: drain the queue then exit (useful for a Kubernetes Job)."
 msgstr ""
-"`--batch`: procesa todas las tareas pendientes y sale (útil para un Job "
-"de Kubernetes)."
+"`--batch`: svuota la coda e poi termina (utile per un Job Kubernetes)."
 
 #: ../../usage.md:26
 msgid "`--max-tasks N`: exit after roughly N tasks."
-msgstr "`--max-tasks N`: sale después de aproximadamente N tareas."
+msgstr "`--max-tasks N`: termina dopo circa N task."
 
 #: ../../usage.md:27
 msgid "`--backend default`: which `TASKS` alias to process."
-msgstr "`--backend default`: qué alias de `TASKS` procesar."
+msgstr "`--backend default`: quale alias di `TASKS` elaborare."
 
 #: ../../usage.md:29
 msgid "Django admin"
-msgstr "Admin de Django"
+msgstr "Admin di Django"
 
 #: ../../usage.md:31
 msgid "`TaskRow` is registered read-only in the Django admin for inspection."
 msgstr ""
-"`TaskRow` está registrado en modo solo lectura en el admin de Django para"
-" inspección."
+"`TaskRow` è registrato in sola lettura nell'admin di Django per "
+"l'ispezione."
 
 #: ../../usage.md:33
 msgid "OpenTelemetry (optional)"
-msgstr "OpenTelemetry (opcional)"
+msgstr "OpenTelemetry (opzionale)"
 
 #: ../../usage.md:39
 msgid ""
@@ -89,12 +90,12 @@ msgid ""
 "`opentelemetry-api` installed at all, tracing is skipped entirely with "
 "zero import errors."
 msgstr ""
-"Instalar el extra `otel` (solo `opentelemetry-api`) envuelve cada "
-"ejecución de tarea en un span llamado `<TASK_WORKER_SPAN_PREFIX>.<task_path>`"
-" (atributos: `django_task_psql.attempt`, `django_task_psql.queue_name`), "
-"con las excepciones registradas y el span marcado como error. No se "
-"exporta nada a menos que tu app configure su propio `TracerProvider` y "
-"exportador (ej. `opentelemetry-sdk` + un exportador OTLP); sin "
-"`opentelemetry-api` instalado, el tracing se salta por completo sin "
-"errores de import."
-
+"Installare l'extra `otel` (solo `opentelemetry-api`) avvolge ogni "
+"esecuzione di task in uno span chiamato "
+"`<TASK_WORKER_SPAN_PREFIX>.<task_path>` (attributi: "
+"`django_task_psql.attempt`, `django_task_psql.queue_name`), con le "
+"eccezioni registrate e lo span marcato come errore. Nulla viene esportato "
+"a meno che la tua app non configuri autonomamente un `TracerProvider` e "
+"un exporter (ad es. `opentelemetry-sdk` + un exporter OTLP); senza "
+"`opentelemetry-api` installato, il tracing viene saltato del tutto senza "
+"alcun errore di import."

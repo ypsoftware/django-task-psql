@@ -1,18 +1,19 @@
-# Spanish translations for django-task-psql.
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, YP Software
 # This file is distributed under the same license as the django-task-psql
 # package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: django-task-psql \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-27 10:50-0300\n"
-"PO-Revision-Date: 2026-08-26 20:15-0300\n"
-"Last-Translator: YP Software <info@ypsoftware.com.py>\n"
-"Language: es\n"
-"Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,7 +21,7 @@ msgstr ""
 
 #: ../../configuration.md:1
 msgid "Configuration"
-msgstr "Configuración"
+msgstr "配置"
 
 #: ../../configuration.md:3
 msgid ""
@@ -28,21 +29,20 @@ msgid ""
 "them have sane defaults for local development — set them in production as"
 " needed."
 msgstr ""
-"El ajuste del worker se hace vía variables de entorno `TASK_WORKER_*`. "
-"Todas tienen valores por defecto razonables para desarrollo local — "
-"configuralas en producción según haga falta."
+"worker 的调优通过 `TASK_WORKER_*` 环境变量完成。它们都有适合本地开发的合理"
+"默认值 — 按需在生产环境中进行设置。"
 
 #: ../../configuration.md
 msgid "Variable"
-msgstr "Variable"
+msgstr "变量"
 
 #: ../../configuration.md
 msgid "Default"
-msgstr "Default"
+msgstr "默认值"
 
 #: ../../configuration.md
 msgid "Purpose"
-msgstr "Propósito"
+msgstr "作用"
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_CONCURRENCY`"
@@ -54,7 +54,7 @@ msgstr "`1`"
 
 #: ../../configuration.md
 msgid "Threads processing tasks in parallel."
-msgstr "Threads procesando tareas en paralelo."
+msgstr "并行处理任务的线程数。"
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_STALE_MINUTES`"
@@ -69,8 +69,8 @@ msgid ""
 "A task stuck `RUNNING` (worker crash/OOM) is recovered to `READY` after "
 "this many minutes."
 msgstr ""
-"Una tarea que quedó `RUNNING` (crash/OOM del worker) se recupera a "
-"`READY` después de estos minutos."
+"卡在 `RUNNING` 状态的任务（worker 崩溃或 OOM）在经过这么多分钟后会被恢复为 "
+"`READY`。"
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_BACKOFF_BASE_S`"
@@ -82,7 +82,7 @@ msgstr "`30`"
 
 #: ../../configuration.md
 msgid "Base delay for exponential backoff between retries."
-msgstr "Delay base del backoff exponencial entre reintentos."
+msgstr "重试之间指数退避的基础延迟时间。"
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_HEARTBEAT_S`"
@@ -93,8 +93,8 @@ msgid ""
 "Fallback polling interval while waiting on `LISTEN`/`NOTIFY` (covers "
 "deferred tasks whose `run_after` has just elapsed)."
 msgstr ""
-"Intervalo de polling de respaldo mientras se espera en `LISTEN`/`NOTIFY` "
-"(cubre tareas diferidas cuyo `run_after` venció sin un `NOTIFY` nuevo)."
+"等待 `LISTEN`/`NOTIFY` 期间的回退轮询间隔（用于覆盖 `run_after` 刚到期的延"
+"迟任务）。"
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_DB_ALIAS`"
@@ -111,10 +111,9 @@ msgid ""
 "1`) if you don't want the worker sharing a connection pool with your web "
 "process."
 msgstr ""
-"Qué alias de `DATABASES` usa el worker para conectarse. Apuntá esto a un "
-"alias separado (con su propio pool dimensionado para "
-"`TASK_WORKER_CONCURRENCY + 1`) si no querés que el worker comparta el "
-"connection pool con tu proceso web."
+"worker 连接所使用的 `DATABASES` 别名。如果不想让 worker 与 web 进程共用同"
+"一个连接池，可以把它指向一个单独的别名（并将其连接池大小设为 "
+"`TASK_WORKER_CONCURRENCY + 1`）。"
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_SPAN_PREFIX`"
@@ -129,14 +128,13 @@ msgid ""
 "Prefix for OpenTelemetry span names (`<prefix>.<task_path>`). Only "
 "relevant if the `otel` extra is installed."
 msgstr ""
-"Prefijo para los nombres de span de OpenTelemetry (`<prefix>.<task_path>`)."
-" Solo aplica si el extra `otel` está instalado."
+"OpenTelemetry span 名称的前缀（`<prefix>.<task_path>`）。仅在安装了 "
+"`otel` extra 时才有意义。"
 
 #: ../../configuration.md:14
 msgid ""
 "A CLI flag (`--concurrency`, `--queues`) always overrides its "
 "corresponding environment variable."
 msgstr ""
-"Un flag de CLI (`--concurrency`, `--queues`) siempre tiene prioridad "
-"sobre la variable de entorno correspondiente."
+"CLI 标志（`--concurrency`、`--queues`）始终会覆盖其对应的环境变量。"
 

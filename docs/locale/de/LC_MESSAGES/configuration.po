@@ -1,17 +1,18 @@
-# Spanish translations for django-task-psql.
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, YP Software
 # This file is distributed under the same license as the django-task-psql
 # package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: django-task-psql \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-27 10:50-0300\n"
-"PO-Revision-Date: 2026-08-26 20:15-0300\n"
-"Last-Translator: YP Software <info@ypsoftware.com.py>\n"
-"Language: es\n"
-"Language-Team: es <LL@li.org>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -20,7 +21,7 @@ msgstr ""
 
 #: ../../configuration.md:1
 msgid "Configuration"
-msgstr "Configuración"
+msgstr "Konfiguration"
 
 #: ../../configuration.md:3
 msgid ""
@@ -28,9 +29,9 @@ msgid ""
 "them have sane defaults for local development — set them in production as"
 " needed."
 msgstr ""
-"El ajuste del worker se hace vía variables de entorno `TASK_WORKER_*`. "
-"Todas tienen valores por defecto razonables para desarrollo local — "
-"configuralas en producción según haga falta."
+"Die Feinabstimmung des Workers erfolgt über die Umgebungsvariablen "
+"`TASK_WORKER_*`. Alle haben sinnvolle Standardwerte für die lokale "
+"Entwicklung — setze sie in der Produktion nach Bedarf."
 
 #: ../../configuration.md
 msgid "Variable"
@@ -38,11 +39,11 @@ msgstr "Variable"
 
 #: ../../configuration.md
 msgid "Default"
-msgstr "Default"
+msgstr "Standardwert"
 
 #: ../../configuration.md
 msgid "Purpose"
-msgstr "Propósito"
+msgstr "Zweck"
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_CONCURRENCY`"
@@ -54,7 +55,7 @@ msgstr "`1`"
 
 #: ../../configuration.md
 msgid "Threads processing tasks in parallel."
-msgstr "Threads procesando tareas en paralelo."
+msgstr "Threads, die Aufgaben parallel verarbeiten."
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_STALE_MINUTES`"
@@ -69,8 +70,8 @@ msgid ""
 "A task stuck `RUNNING` (worker crash/OOM) is recovered to `READY` after "
 "this many minutes."
 msgstr ""
-"Una tarea que quedó `RUNNING` (crash/OOM del worker) se recupera a "
-"`READY` después de estos minutos."
+"Eine Aufgabe, die im Status `RUNNING` hängen bleibt (Absturz/OOM des "
+"Workers), wird nach dieser Anzahl Minuten auf `READY` zurückgesetzt."
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_BACKOFF_BASE_S`"
@@ -82,7 +83,7 @@ msgstr "`30`"
 
 #: ../../configuration.md
 msgid "Base delay for exponential backoff between retries."
-msgstr "Delay base del backoff exponencial entre reintentos."
+msgstr "Basis-Verzögerung für den exponentiellen Backoff zwischen Wiederholungen."
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_HEARTBEAT_S`"
@@ -93,8 +94,8 @@ msgid ""
 "Fallback polling interval while waiting on `LISTEN`/`NOTIFY` (covers "
 "deferred tasks whose `run_after` has just elapsed)."
 msgstr ""
-"Intervalo de polling de respaldo mientras se espera en `LISTEN`/`NOTIFY` "
-"(cubre tareas diferidas cuyo `run_after` venció sin un `NOTIFY` nuevo)."
+"Fallback-Polling-Intervall während des Wartens auf `LISTEN`/`NOTIFY` "
+"(deckt verzögerte Aufgaben ab, deren `run_after` gerade abgelaufen ist)."
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_DB_ALIAS`"
@@ -111,10 +112,10 @@ msgid ""
 "1`) if you don't want the worker sharing a connection pool with your web "
 "process."
 msgstr ""
-"Qué alias de `DATABASES` usa el worker para conectarse. Apuntá esto a un "
-"alias separado (con su propio pool dimensionado para "
-"`TASK_WORKER_CONCURRENCY + 1`) si no querés que el worker comparta el "
-"connection pool con tu proceso web."
+"Über welchen `DATABASES`-Alias sich der Worker verbindet. Verweise damit "
+"auf einen separaten Alias (mit eigenem Pool, dimensioniert für "
+"`TASK_WORKER_CONCURRENCY + 1`), wenn der Worker sich den Connection-Pool "
+"nicht mit deinem Web-Prozess teilen soll."
 
 #: ../../configuration.md
 msgid "`TASK_WORKER_SPAN_PREFIX`"
@@ -129,14 +130,14 @@ msgid ""
 "Prefix for OpenTelemetry span names (`<prefix>.<task_path>`). Only "
 "relevant if the `otel` extra is installed."
 msgstr ""
-"Prefijo para los nombres de span de OpenTelemetry (`<prefix>.<task_path>`)."
-" Solo aplica si el extra `otel` está instalado."
+"Präfix für OpenTelemetry-Span-Namen (`<prefix>.<task_path>`). Nur "
+"relevant, wenn das `otel`-Extra installiert ist."
 
 #: ../../configuration.md:14
 msgid ""
 "A CLI flag (`--concurrency`, `--queues`) always overrides its "
 "corresponding environment variable."
 msgstr ""
-"Un flag de CLI (`--concurrency`, `--queues`) siempre tiene prioridad "
-"sobre la variable de entorno correspondiente."
+"Ein CLI-Flag (`--concurrency`, `--queues`) hat immer Vorrang vor der "
+"entsprechenden Umgebungsvariable."
 

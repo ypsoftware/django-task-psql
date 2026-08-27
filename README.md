@@ -1,5 +1,11 @@
 # django-task-psql
 
+[![CI](https://github.com/ypsoftware/django-task-psql/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/ypsoftware/django-task-psql/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/django-task-psql.svg)](https://pypi.org/project/django-task-psql/)
+[![Python versions](https://img.shields.io/pypi/pyversions/django-task-psql.svg)](https://pypi.org/project/django-task-psql/)
+[![Docs](https://readthedocs.org/projects/django-task-psql/badge/?version=latest)](https://django-task-psql.readthedocs.io/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A Postgres-native backend for [Django Tasks](https://docs.djangoproject.com/en/stable/topics/tasks/) (`django.tasks`, Django 6.0+).
 
 Django 6.0 introduced an official interface for background task queues (`@task`, `.enqueue()`, pluggable backends via the `TASKS` setting). `django-task-psql` is a production backend for that interface, built specifically for Postgres: real queueing via `SKIP LOCKED`, `LISTEN`/`NOTIFY` wakeup instead of polling, and automatic retries with exponential backoff — no Celery or Redis required.
@@ -50,6 +56,8 @@ def send_welcome_email(user_id):
 send_welcome_email.enqueue(user_id)
 ```
 
+Per-task retry override: `@task(queue_name="emails", max_attempts=1)`. Overrides `OPTIONS["max_attempts"]` for that task only; tasks that don't set it keep using the backend-wide default.
+
 Coroutines (`async def`) work out of the box — `Task.call()` bridges them via `async_to_sync` internally, no asyncio event loop needed in the worker.
 
 ### Running the worker
@@ -73,6 +81,7 @@ All of these have sane defaults for local development — set them in production
 | `TASK_WORKER_BACKOFF_BASE_S` | `30` | Base delay for exponential backoff between retries. |
 | `TASK_WORKER_HEARTBEAT_S` | `5` | Fallback polling interval while waiting on `LISTEN`/`NOTIFY` (covers deferred tasks whose `run_after` has just elapsed). |
 | `TASK_WORKER_DB_ALIAS` | `"default"` | Which `DATABASES` alias the worker connects through. Point this at a separate alias (with its own pool sized for `TASK_WORKER_CONCURRENCY + 1`) if you don't want the worker sharing a connection pool with your web process. |
+| `TASK_WORKER_SPAN_PREFIX` | `"django_task_psql"` | Prefix for OpenTelemetry span names (`<prefix>.<task_path>`). Only relevant if the `otel` extra is installed. |
 
 A CLI flag (`--concurrency`, `--queues`) always overrides its corresponding environment variable.
 
@@ -96,12 +105,20 @@ python manage.py cleanup_tasks --days 7      # prune old finished rows, e.g. fro
 
 `TaskRow` is registered read-only in the Django admin for inspection.
 
+### OpenTelemetry (optional)
+
+```bash
+pip install django-task-psql[otel]
+```
+
+Installing the `otel` extra (`opentelemetry-api` only) wraps every task execution in a span named `<TASK_WORKER_SPAN_PREFIX>.<task_path>` (attributes: `django_task_psql.attempt`, `django_task_psql.queue_name`), with exceptions recorded and the span marked as an error. Nothing is exported unless your app configures a `TracerProvider` and exporter itself (e.g. `opentelemetry-sdk` + an OTLP exporter); without `opentelemetry-api` installed at all, tracing is skipped entirely with zero import errors.
+
 ## How it works
 
 - **Claiming**: `UPDATE ... WHERE id = (SELECT ... FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING ...` — safe for multiple worker processes running in parallel.
 - **Wakeup**: a Postgres trigger emits `NOTIFY task_psql_new` on every `INSERT` of a `READY` task (fired after commit, so tasks created inside a transaction only wake the worker once it commits). The worker blocks on `LISTEN` with a heartbeat fallback (`TASK_WORKER_HEARTBEAT_S`) to catch deferred tasks whose `run_after` has elapsed without a fresh `NOTIFY`.
 - **Concurrency**: the worker's main thread claims one task at a time and submits it to a `ThreadPoolExecutor`; a `Semaphore` limits how many are in flight before claiming the next. Each thread closes its own database connection when it's done with a task — with Django's native connection pool enabled, that returns the connection to the pool instead of dropping the socket, which avoids a connection leak that recurring background threads are prone to.
-- **Retries**: on failure, a task is rescheduled with `run_after = now() + backoff_base * 2^(attempt - 1)`, until `max_attempts` is reached, at which point it's marked `FAILED`.
+- **Retries**: on failure, a task is rescheduled with `run_after = now() + backoff_base * 2^(attempt - 1)`, until `max_attempts` is reached, at which point it's marked `FAILED`. `max_attempts` can be set per-task (`@task(max_attempts=1)`), falling back to `OPTIONS["max_attempts"]` when unset.
 
 ## Scope
 

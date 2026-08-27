@@ -1,18 +1,19 @@
-# Spanish translations for django-task-psql.
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2026, YP Software
 # This file is distributed under the same license as the django-task-psql
 # package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: django-task-psql \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-27 10:50-0300\n"
-"PO-Revision-Date: 2026-08-26 20:15-0300\n"
-"Last-Translator: YP Software <info@ypsoftware.com.py>\n"
-"Language: es\n"
-"Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,7 +21,7 @@ msgstr ""
 
 #: ../../architecture.md:1
 msgid "How it works"
-msgstr "Cómo funciona"
+msgstr "工作原理"
 
 #: ../../architecture.md:3
 msgid ""
@@ -28,9 +29,8 @@ msgid ""
 "LIMIT 1) RETURNING ...` — safe for multiple worker processes running in "
 "parallel."
 msgstr ""
-"**Claiming**: `UPDATE ... WHERE id = (SELECT ... FOR UPDATE SKIP LOCKED "
-"LIMIT 1) RETURNING ...` — seguro para múltiples procesos worker corriendo"
-" en paralelo."
+"**认领（Claiming）**：`UPDATE ... WHERE id = (SELECT ... FOR UPDATE SKIP "
+"LOCKED LIMIT 1) RETURNING ...` — 对多个并行运行的 worker 进程来说是安全的。"
 
 #: ../../architecture.md:4
 msgid ""
@@ -40,12 +40,11 @@ msgid ""
 "`LISTEN` with a heartbeat fallback (`TASK_WORKER_HEARTBEAT_S`) to catch "
 "deferred tasks whose `run_after` has elapsed without a fresh `NOTIFY`."
 msgstr ""
-"**Activación**: un trigger de Postgres emite `NOTIFY task_psql_new` en "
-"cada `INSERT` de una tarea `READY` (disparado después del commit, así que"
-" las tareas creadas dentro de una transacción solo despiertan al worker "
-"una vez que esa transacción hace commit). El worker bloquea en `LISTEN` "
-"con un fallback por heartbeat (`TASK_WORKER_HEARTBEAT_S`) para cubrir "
-"tareas diferidas cuyo `run_after` venció sin un `NOTIFY` nuevo."
+"**唤醒（Wakeup）**：每当有 `READY` 状态的任务被 `INSERT`，Postgres 触发器就"
+"会发出 `NOTIFY task_psql_new`（在事务提交后触发，因此在事务内创建的任务，"
+"只有在该事务提交后才会唤醒 worker）。worker 在 `LISTEN` 上阻塞等待，并有一"
+"个心跳回退机制（`TASK_WORKER_HEARTBEAT_S`）来兜底那些 `run_after` 已到期、"
+"但没有收到新 `NOTIFY` 的延迟任务。"
 
 #: ../../architecture.md:5
 msgid ""
@@ -57,13 +56,11 @@ msgid ""
 " the socket, which avoids a connection leak that recurring background "
 "threads are prone to."
 msgstr ""
-"**Concurrencia**: el thread principal del worker claimea una tarea a la "
-"vez y la somete a un `ThreadPoolExecutor`; un `Semaphore` limita cuántas "
-"hay en vuelo antes de claimear la siguiente. Cada thread cierra su propia"
-" conexión a la base al terminar una tarea — con el connection pool nativo"
-" de Django activo, eso devuelve la conexión al pool en vez de cortar el "
-"socket, evitando una fuga de conexiones a la que son propensos los "
-"threads de background que se reutilizan."
+"**并发（Concurrency）**：worker 的主线程每次认领一个任务，并将其提交给 "
+"`ThreadPoolExecutor`；`Semaphore` 限制了在认领下一个任务之前，同时在处理中"
+"的任务数量。每个线程在完成任务后会关闭自己的数据库连接 — 启用 Django 原生"
+"连接池后，这会把连接归还给连接池，而不是直接断开 socket，从而避免了循环使"
+"用的后台线程容易出现的连接泄漏问题。"
 
 #: ../../architecture.md:6
 msgid ""
@@ -73,9 +70,8 @@ msgid ""
 "(`@task(max_attempts=1)`), falling back to `OPTIONS[\"max_attempts\"]` "
 "when unset."
 msgstr ""
-"**Reintentos**: ante una falla, la tarea se reprograma con `run_after = "
-"now() + backoff_base * 2^(attempt - 1)`, hasta alcanzar `max_attempts`, "
-"momento en el que se marca `FAILED`. `max_attempts` se puede setear por "
-"tarea (`@task(max_attempts=1)`), cayendo a `OPTIONS[\"max_attempts\"]` "
-"cuando no se especifica."
+"**重试（Retries）**：任务失败后，会以 `run_after = now() + backoff_base * "
+"2^(attempt - 1)` 重新调度，直到达到 `max_attempts` 为止，此时任务被标记为 "
+"`FAILED`。`max_attempts` 可以按任务单独设置（`@task(max_attempts=1)`），"
+"未设置时回退到 `OPTIONS[\"max_attempts\"]`。"
 

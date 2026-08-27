@@ -1,0 +1,72 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, YP Software
+# This file is distributed under the same license as the django-task-psql
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-task-psql \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-27 10:50-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../index.md:9
+msgid "Contents"
+msgstr "目录"
+
+#: ../../index.md:1
+msgid "django-task-psql"
+msgstr "django-task-psql"
+
+#: ../../index.md:3
+msgid ""
+"A Postgres-native backend for [Django "
+"Tasks](https://docs.djangoproject.com/en/stable/topics/tasks/) "
+"(`django.tasks`, Django 6.0+)."
+msgstr ""
+"一个原生支持 Postgres 的 [Django Tasks](https://docs.djangoproject.com/en"
+"/stable/topics/tasks/) 后端（`django.tasks`，Django 6.0+）。"
+
+#: ../../index.md:5
+msgid ""
+"Django 6.0 introduced an official interface for background task queues "
+"(`@task`, `.enqueue()`, pluggable backends via the `TASKS` setting). "
+"`django-task-psql` is a production backend for that interface, built "
+"specifically for Postgres: real queueing via `SKIP LOCKED`, "
+"`LISTEN`/`NOTIFY` wakeup instead of polling, and automatic retries with "
+"exponential backoff — no Celery or Redis required."
+msgstr ""
+"Django 6.0 引入了后台任务队列的官方接口（`@task`、`.enqueue()`，以及通过 "
+"`TASKS` 设置实现的可插拔后端）。`django-task-psql` 就是该接口的一个生产级"
+"后端，专为 Postgres 打造：通过 `SKIP LOCKED` 实现真正的排队，通过 "
+"`LISTEN`/`NOTIFY` 唤醒而非轮询，并支持指数退避的自动重试 — 完全不需要 "
+"Celery 或 Redis。"
+
+#: ../../index.md:7
+msgid ""
+"Built Postgres-only on purpose, trading multi-engine support for tighter "
+"integration with Postgres features (see [`django-tasks-"
+"db`](https://github.com/RealOrangeOne/django-tasks-db) for a database-"
+"agnostic alternative)."
+msgstr ""
+"刻意只支持 Postgres，以放弃多数据库引擎支持为代价，换取与 Postgres 特性更"
+"紧密的集成（如需引擎无关的替代方案，参见 [`django-tasks-db`](https://"
+"github.com/RealOrangeOne/django-tasks-db)）。"
+
+#: ../../index.md:21
+msgid "License"
+msgstr "许可证"
+
+#: ../../index.md:23
+msgid "MIT"
+msgstr "MIT"
+

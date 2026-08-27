@@ -1,0 +1,34 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, YP Software
+# This file is distributed under the same license as the django-task-psql
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-task-psql \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-27 10:50-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../scope.md:1
+msgid "Scope"
+msgstr "适用范围"
+
+#: ../../scope.md:3
+msgid ""
+"Targets Postgres and Django 6.0+. Designed for a single Postgres cluster;"
+" `SKIP LOCKED` already supports running multiple worker processes against"
+" it in parallel."
+msgstr ""
+"面向 Postgres 和 Django 6.0+。设计上针对单个 Postgres 集群；`SKIP LOCKED` "
+"已经支持针对该集群并行运行多个 worker 进程。"
+

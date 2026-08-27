@@ -54,3 +54,15 @@ def test_run_after_defiere_la_tarea():
     result = tasks.ok_task.using(run_after=timezone.now() + timedelta(minutes=5)).enqueue(1)
     row = TaskRow.objects.get(id=result.id)
     assert row.run_after > timezone.now()
+
+
+def test_max_attempts_por_tarea_se_escribe_en_la_fila():
+    result = tasks.task_max_attempts_5.enqueue(1)
+    row = TaskRow.objects.get(id=result.id)
+    assert row.max_attempts == 5
+
+
+def test_max_attempts_sin_override_cae_al_default_del_backend():
+    result = tasks.ok_task.enqueue(1)
+    row = TaskRow.objects.get(id=result.id)
+    assert row.max_attempts == 1

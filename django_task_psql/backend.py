@@ -5,6 +5,7 @@ espeja su forma de construir/mutar un ``TaskResult`` en vez de reinventarla.
 """
 
 import uuid
+from dataclasses import dataclass
 
 from django.tasks.backends.base import BaseTaskBackend
 from django.tasks.base import Task, TaskError, TaskResult, TaskResultStatus
@@ -19,12 +20,20 @@ from django.utils.module_loading import import_string
 REGISTRY: dict[str, Task] = {}
 
 
+@dataclass(frozen=True, slots=True, kw_only=True)
 class PostgresTask(Task):
     """Subclase de ``Task`` que se auto-registra al crearse.
 
     ``task_class`` es el punto de extensión que ``django.tasks`` expone justo
-    para esto: el decorador ``@task`` llama ``task_backends[backend].task_class(...)``.
+    para esto: el decorador ``@task`` llama ``task_backends[backend].task_class(...)``,
+    reenviando ``**kwargs`` sin filtrar — por eso ``@task(max_attempts=1)`` ya
+    funciona hoy sin ningún cambio en Django.
+
+    ``max_attempts=None`` (default) significa "usar el valor de
+    ``OPTIONS.max_attempts`` del backend" — ver ``PostgresBackend.enqueue()``.
     """
+
+    max_attempts: int | None = None
 
     def __post_init__(self):
         super().__post_init__()
@@ -76,7 +85,7 @@ class PostgresBackend(BaseTaskBackend):
             kwargs=normalize_json(kwargs),
             priority=task.priority,
             run_after=task.run_after or timezone.now(),
-            max_attempts=self.options.get("max_attempts", 1),
+            max_attempts=task.max_attempts if task.max_attempts is not None else self.options.get("max_attempts", 1),
             backend_name=self.alias,
         )
         return self._to_task_result(row, task)

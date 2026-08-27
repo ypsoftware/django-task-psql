@@ -15,6 +15,11 @@ def always_fails():
     raise RuntimeError("boom")
 
 
+@task(queue_name="test-ok", max_attempts=5)
+def task_max_attempts_5(x):
+    return x
+
+
 @task(queue_name="test-ok")
 def not_serializable():
     class X:

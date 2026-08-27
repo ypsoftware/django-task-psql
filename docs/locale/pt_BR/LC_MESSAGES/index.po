@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2026, YP Software
+# This file is distributed under the same license as the django-task-psql
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-task-psql \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-27 10:50-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../index.md:9
+msgid "Contents"
+msgstr "Conteúdo"
+
+#: ../../index.md:1
+msgid "django-task-psql"
+msgstr "django-task-psql"
+
+#: ../../index.md:3
+msgid ""
+"A Postgres-native backend for [Django "
+"Tasks](https://docs.djangoproject.com/en/stable/topics/tasks/) "
+"(`django.tasks`, Django 6.0+)."
+msgstr ""
+"Um backend nativo do Postgres para o [Django "
+"Tasks](https://docs.djangoproject.com/en/stable/topics/tasks/) "
+"(`django.tasks`, Django 6.0+)."
+
+#: ../../index.md:5
+msgid ""
+"Django 6.0 introduced an official interface for background task queues "
+"(`@task`, `.enqueue()`, pluggable backends via the `TASKS` setting). "
+"`django-task-psql` is a production backend for that interface, built "
+"specifically for Postgres: real queueing via `SKIP LOCKED`, "
+"`LISTEN`/`NOTIFY` wakeup instead of polling, and automatic retries with "
+"exponential backoff — no Celery or Redis required."
+msgstr ""
+"O Django 6.0 introduziu uma interface oficial para filas de tarefas em "
+"segundo plano (`@task`, `.enqueue()`, backends intercambiáveis via a "
+"configuração `TASKS`). `django-task-psql` é um backend de produção para "
+"essa interface, construído especificamente para o Postgres: enfileiramento "
+"real via `SKIP LOCKED`, ativação por `LISTEN`/`NOTIFY` em vez de polling, "
+"e retentativas automáticas com backoff exponencial — sem necessidade de "
+"Celery ou Redis."
+
+#: ../../index.md:7
+msgid ""
+"Built Postgres-only on purpose, trading multi-engine support for tighter "
+"integration with Postgres features (see [`django-tasks-"
+"db`](https://github.com/RealOrangeOne/django-tasks-db) for a database-"
+"agnostic alternative)."
+msgstr ""
+"Construído exclusivamente para o Postgres de propósito, trocando suporte "
+"multi-engine por uma integração mais estreita com os recursos do "
+"Postgres (veja [`django-tasks-db`](https://github.com/RealOrangeOne/"
+"django-tasks-db) para uma alternativa agnóstica de banco de dados)."
+
+#: ../../index.md:21
+msgid "License"
+msgstr "Licença"
+
+#: ../../index.md:23
+msgid "MIT"
+msgstr "MIT"

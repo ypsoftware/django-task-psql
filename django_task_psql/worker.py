@@ -31,11 +31,17 @@ import signal
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 from datetime import timedelta
 
 from django.db import connections
 from django.utils import timezone
 from django.utils.crypto import get_random_string
+
+try:
+    from opentelemetry import trace
+except ImportError:
+    trace = None
 
 from . import conf
 from .backend import REGISTRY
@@ -45,6 +51,28 @@ from .models import TaskRow, TaskStatus
 logger = logging.getLogger("django_task_psql")
 
 NOTIFY_CHANNEL = "task_psql_new"
+
+# None si el paquete opentelemetry-api no está instalado — get_tracer() con un
+# TracerProvider no configurado por el host ya usa el no-op provider de la API
+# OTEL, así que ni siquiera hace falta ese chequeo acá.
+_tracer = trace.get_tracer(__name__) if trace is not None else None
+
+
+@contextmanager
+def _start_span(name: str, row: dict):
+    """Span opcional alrededor de la ejecución de una tarea.
+
+    Sin ``opentelemetry-api`` instalado (``trace is None``) o sin tracer
+    configurado, no-opea: yield ``None`` y el caller salta el resto de la
+    instrumentación (``record_exception``/``set_status``)."""
+    if _tracer is None:
+        yield None
+        return
+    with _tracer.start_as_current_span(name) as span:
+        span.set_attribute("django_task_psql.attempt", row["attempt"])
+        span.set_attribute("django_task_psql.queue_name", row["queue_name"])
+        yield span
+
 
 # CLAIM_SQL y RECOVER_STALE_SQL comparan contra un timestamp calculado en
 # Python (pasado como parámetro), no contra el ``NOW()`` de Postgres: el reloj
@@ -68,7 +96,7 @@ WHERE id = (
     FOR UPDATE SKIP LOCKED
     LIMIT 1
 )
-RETURNING id, task_path, args, kwargs, attempt, max_attempts;
+RETURNING id, task_path, args, kwargs, attempt, max_attempts, queue_name;
 """
 
 RECOVER_STALE_SQL = """
@@ -233,6 +261,7 @@ class Worker:
             "kwargs": _coerce_json(row[3], default={}),
             "attempt": row[4],
             "max_attempts": row[5],
+            "queue_name": row[6],
         }
 
     def _execute(self, row: dict) -> None:
@@ -240,12 +269,17 @@ class Worker:
         if task is None:
             self._fail(row, f"task {row['task_path']!r} no registrada")
             return
-        try:
-            return_value = task.call(*row["args"], **row["kwargs"])
-        except Exception as e:
-            logger.exception("tarea fallo id=%s task_path=%s", row["id"], row["task_path"])
-            self._retry_or_fail(row, e)
-            return
+        span_name = f"{conf.TASK_WORKER_SPAN_PREFIX}.{row['task_path']}"
+        with _start_span(span_name, row) as span:
+            try:
+                return_value = task.call(*row["args"], **row["kwargs"])
+            except Exception as e:
+                logger.exception("tarea fallo id=%s task_path=%s", row["id"], row["task_path"])
+                if span is not None:
+                    span.record_exception(e)
+                    span.set_status(trace.Status(trace.StatusCode.ERROR))
+                self._retry_or_fail(row, e)
+                return
         TaskRow.objects.using(self.db_alias).filter(id=row["id"]).update(
             status=TaskStatus.SUCCESSFUL,
             return_value=return_value if _is_json_serializable(return_value) else None,
