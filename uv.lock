@@ -228,7 +228,7 @@ wheels = [
 
 [[package]]
 name = "django-task-psql"
-version = "0.2.0"
+version = "0.2.1"
 source = { editable = "." }
 dependencies = [
     { name = "django" },
@@ -258,7 +258,7 @@ docs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django", specifier = ">=6.0" },
+    { name = "django", specifier = ">=6.1" },
     { name = "opentelemetry-api", marker = "extra == 'otel'", specifier = ">=1.20" },
     { name = "psycopg", extras = ["pool"], specifier = ">=3.1" },
 ]

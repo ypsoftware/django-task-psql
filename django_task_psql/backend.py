@@ -36,7 +36,11 @@ class PostgresTask(Task):
     max_attempts: int | None = None
 
     def __post_init__(self):
-        super().__post_init__()
+        # super() sin argumentos rompe en CPython <= 3.13: dataclass(slots=True)
+        # reconstruye la clase, y la celda __class__ del método queda apuntando
+        # a la clase descartada (bug de CPython, corregido en 3.14+). La forma
+        # explícita no depende de esa celda.
+        super(PostgresTask, self).__post_init__()
         REGISTRY[self.module_path] = self
 
 

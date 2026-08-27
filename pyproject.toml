@@ -1,14 +1,22 @@
 [project]
 name = "django-task-psql"
-version = "0.2.0"
+version = "0.2.1"
 description = "A Postgres-native backend for Django Tasks (django.tasks) — SKIP LOCKED claiming, LISTEN/NOTIFY wakeup, automatic retry with backoff."
 authors = [{ name = "YP Software", email = "info@ypsoftware.com.py" }]
 license = "MIT"
 readme = "README.md"
 requires-python = ">=3.12"
 keywords = ["django", "tasks", "postgres", "queue", "background-jobs"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Framework :: Django",
+    "Framework :: Django :: 6.1",
+]
 dependencies = [
-    "django>=6.0",
+    "django>=6.1", # 6.0 no reenvía kwargs arbitrarios en @task() (necesario para max_attempts por tarea)
     "psycopg[pool]>=3.1",
 ]
 

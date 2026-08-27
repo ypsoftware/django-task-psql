@@ -8,6 +8,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        django-version: ["6.1", "latest"] # 6.1 = mínima soportada (django>=6.1 en pyproject.toml)
     services:
       postgres:
         image: postgres:17
@@ -33,6 +37,9 @@ jobs:
         uses: astral-sh/setup-uv@caf0cab7a618c569241d31dcd442f54681755d39 # v3.2.4
       - name: Install dependencies
         run: uv sync --python 3.12
+      - name: Pin minimum Django version
+        if: matrix.django-version != 'latest'
+        run: uv pip install "django==${{ matrix.django-version }}"
       - name: Ruff
         run: uv run ruff check .
       - name: Run migrations
