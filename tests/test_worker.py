@@ -32,6 +32,14 @@ def test_claim_obtiene_ready_y_la_marca_running():
     assert row.attempt == 1
 
 
+def test_claim_agrega_worker_id_a_worker_ids():
+    TaskRow.objects.create(task_path=tasks.ok_task.module_path, args=[3], queue_name="test-ok")
+    w = make_worker("test-ok")
+    claimed = w._claim()
+    row = TaskRow.objects.get(id=claimed["id"])
+    assert row.worker_ids == [w.worker_id]
+
+
 def test_claim_ignora_otras_colas():
     TaskRow.objects.create(task_path=tasks.ok_task.module_path, args=[1], queue_name="otra")
     w = make_worker("test-ok")
@@ -88,6 +96,22 @@ def test_execute_excepcion_reintenta_con_backoff():
     assert row.attempt == 1
     assert "boom" in row.traceback
     assert row.run_after > timezone.now()
+
+
+def test_worker_ids_se_acumula_entre_reintentos():
+    t = TaskRow.objects.create(task_path=tasks.always_fails.module_path, queue_name="test-fail", max_attempts=2)
+    w = make_worker("test-fail")
+    w._iterate()
+    w.wait_inflight()
+    t.refresh_from_db()
+    assert t.worker_ids == [w.worker_id]
+
+    # Forzar el retry vencido para el segundo intento.
+    TaskRow.objects.filter(id=t.id).update(run_after=timezone.now())
+    w._iterate()
+    w.wait_inflight()
+    t.refresh_from_db()
+    assert t.worker_ids == [w.worker_id, w.worker_id]
 
 
 def test_execute_se_da_por_vencido_tras_max_attempts():

@@ -24,6 +24,7 @@ Multi-proceso: SKIP LOCKED también deja correr N procesos worker en paralelo
 sin cambios de código — combinable con la concurrencia intra-proceso.
 """
 
+import json
 import logging
 import select
 import signal
@@ -55,7 +56,8 @@ NOTIFY_CHANNEL = "task_psql_new"
 # relojes diferían por un puñado de microsegundos.
 CLAIM_SQL = """
 UPDATE task_psql_task
-SET status = 'RUNNING', started_at = %s, attempt = attempt + 1
+SET status = 'RUNNING', started_at = %s, attempt = attempt + 1,
+    worker_ids = worker_ids || %s::jsonb
 WHERE id = (
     SELECT id FROM task_psql_task
     WHERE status = 'READY'
@@ -217,7 +219,10 @@ class Worker:
     def _claim(self) -> dict | None:
         now = timezone.now()
         with self._connection.cursor() as cur:
-            cur.execute(CLAIM_SQL, [now, now, list(self.queues), self.backend_alias])
+            cur.execute(
+                CLAIM_SQL,
+                [now, json.dumps([self.worker_id]), now, list(self.queues), self.backend_alias],
+            )
             row = cur.fetchone()
         if row is None:
             return None
@@ -289,8 +294,6 @@ class Worker:
 
 
 def _is_json_serializable(v) -> bool:
-    import json
-
     try:
         json.dumps(v)
         return True
@@ -307,8 +310,6 @@ def _coerce_json(value, default):
         return default
     if isinstance(value, (list, dict)):
         return value
-    import json
-
     try:
         return json.loads(value)
     except (TypeError, ValueError):
